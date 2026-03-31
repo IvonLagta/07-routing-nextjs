@@ -1,31 +1,46 @@
 "use client";
 
-import Modal from "@/components/Modal/Modal";
-import NoteDetailsContent from "@/components/NoteDetails/NoteDetailsContent";
-import { useRouter, usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import css from "./NotePreview.module.css";
+import { useParams } from "next/navigation";
+import { fetchNoteById } from "@/lib/api";
+import Modal from "@/components/Modal/Modal";
+import { useRouter } from "next/navigation";
 
-export default function NotePreviewClient() {
+export default function NoteDetailsClient() {
   const router = useRouter();
-  const pathname = usePathname();
+  const handleClose = () => router.back();
 
-  const handleClose = () => {
-    if (typeof window !== "undefined" && window.history.length > 1) {
-      router.back();
-      return;
-    }
+  const params = useParams();
+  const id = params.id as string;
+  const {
+    data: note,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["notes", id],
+    queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
+  });
 
-    const fallback = pathname.startsWith("/notes/filter")
-      ? "/notes/filter/all/1"
-      : "/notes?page=1";
-
-    router.push(fallback);
-  };
+  if (isLoading) {
+    return <p>Loading, please wait...</p>;
+  }
+  if (isError || !note) {
+    return <p>Something went wrong.</p>;
+  }
 
   return (
     <Modal onClose={handleClose}>
       <div className={css.container}>
-        <NoteDetailsContent />
+        <div className={css.item}>
+          <div className={css.header}>
+            <h2>{note.title}</h2>
+          </div>
+          <p className={css.tag}>{note.tag}</p>
+          <p className={css.content}>{note.content}</p>
+          <p className={css.date}>{note.createdAt}</p>
+        </div>
       </div>
     </Modal>
   );
