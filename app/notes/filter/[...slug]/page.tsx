@@ -8,15 +8,15 @@ import NotesClient from "./Notes.clients";
 import { NoteTag } from "@/types/note";
 
 type Props = {
-  params: Promise<{ side: string[] }>;
+  params: Promise<{ slug: string[] }>;
 };
 
 export default async function NotePage({ params }: Props) {
-  const { side } = await params;
-  const category = (side[0] === "all" ? undefined : side[0]) as
+  const { slug } = await params;
+  const category = (slug[0] === "all" ? undefined : slug[0]) as
     | NoteTag
     | undefined;
-  const currentPage = side.length > 1 ? parseInt(side[1], 10) || 1 : 1;
+  const currentPage = slug.length > 1 ? parseInt(slug[1], 10) || 1 : 1;
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
