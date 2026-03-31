@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { fetchNotes, createNote, deleteNote } from "@/lib/api";
 import css from "./NotesPage.module.css";
 import NoteList from "@/components/NoteList/NoteList";
@@ -20,9 +21,11 @@ import { useParams } from "next/navigation";
 
 function NotesClient() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const side = params.side as string[];
   const tag = (side[0] === "all" ? undefined : side[0]) as NoteTag | undefined;
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const currentPage = side.length > 1 ? parseInt(side[1], 10) || 1 : 1;
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
 
@@ -59,7 +62,7 @@ function NotesClient() {
 
   const handleQueryChange = useDebouncedCallback((value: string) => {
     setQuery(value);
-    setCurrentPage(1);
+    router.push(`/notes/filter/${tag || "all"}/1`);
   }, 500);
 
   const onClose = () => {
@@ -80,6 +83,10 @@ function NotesClient() {
 
   const handleDeleteNote = async (id: string) => {
     await deleteNoteMutation.mutateAsync(id);
+  };
+
+  const setCurrentPage = (page: number) => {
+    router.push(`/notes/filter/${tag || "all"}/${page}`);
   };
 
   const totalPages = data?.totalPages ?? 1;

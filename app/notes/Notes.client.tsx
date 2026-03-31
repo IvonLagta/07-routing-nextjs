@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { fetchNotes, createNote, deleteNote } from "@/lib/api";
 import type { Note, NoteTag } from "@/types/note";
 import css from "./NotesPage.module.css";
@@ -12,9 +13,12 @@ import SearchBox from "@/components/SearchBox/SearchBox";
 import NoteForm from "@/components/NoteForm/NoteForm";
 
 function NotesClient() {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
+
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
   const queryClient = useQueryClient();
 
@@ -64,6 +68,12 @@ function NotesClient() {
 
   const openModal = () => {
     setModalIsOpen(true);
+  };
+
+  const setCurrentPage = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    router.push(`?${params.toString()}`);
   };
 
   const totalPages = data?.totalPages ?? 1;

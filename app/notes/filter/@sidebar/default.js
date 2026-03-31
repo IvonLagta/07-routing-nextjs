@@ -14,12 +14,12 @@ export default function SidebarNotes() {
     <nav>
       <ul className={styles.menuList}>
         <li className={styles.menuItem}>
-          <Link href="/notes/filter/all">All notes</Link>
+          <Link href="/notes/filter/all/1">All notes</Link>
         </li>
 
         {tags.map((tag) => (
           <li key={tag.value} className={styles.menuItem}>
-            <Link href={`/notes/filter/${tag.value}`}>{tag.label}</Link>
+            <Link href={`/notes/filter/${tag.value}/1`}>{tag.label}</Link>
           </li>
         ))}
       </ul>

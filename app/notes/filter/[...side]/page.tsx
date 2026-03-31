@@ -16,11 +16,12 @@ export default async function NotePage({ params }: Props) {
   const category = (side[0] === "all" ? undefined : side[0]) as
     | NoteTag
     | undefined;
+  const currentPage = side.length > 1 ? parseInt(side[1], 10) || 1 : 1;
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["notes", 1, "", category],
-    queryFn: () => fetchNotes("", 1, category),
+    queryKey: ["notes", currentPage, "", category],
+    queryFn: () => fetchNotes("", currentPage, category),
   });
 
   return (

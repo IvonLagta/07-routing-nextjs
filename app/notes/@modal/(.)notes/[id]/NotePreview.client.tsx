@@ -15,8 +15,8 @@ export default function NotePreviewClient() {
     }
 
     const fallback = pathname.startsWith("/notes/filter")
-      ? "/notes/filter/all"
-      : "/notes";
+      ? "/notes/filter/all/1"
+      : "/notes?page=1";
 
     router.push(fallback);
   };
