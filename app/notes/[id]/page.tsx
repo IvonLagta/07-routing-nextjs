@@ -1,10 +1,10 @@
-import NotesClient from "@/app/notes/Notes.client";
+import NoteDetailsClient from "./NoteDetails.client";
 import NotePreviewClient from "@/app/@modal/(.)notes/[id]/NotePreview.client";
 
 export default function NoteDetailsPage() {
   return (
     <>
-      <NotesClient />
+      <NoteDetailsClient />
       <NotePreviewClient />
     </>
   );

@@ -13,10 +13,14 @@ type Props = {
 
 export default async function NotePage({ params }: Props) {
   const { slug } = await params;
+
+  // Определяем категорию (тег)
   const category = (slug[0] === "all" ? undefined : slug[0]) as
     | NoteTag
     | undefined;
+
   const currentPage = slug.length > 1 ? parseInt(slug[1], 10) || 1 : 1;
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { fetchNotes, createNote, deleteNote } from "@/lib/api";
 import css from "./NotesPage.module.css";
 import NoteList from "@/components/NoteList/NoteList";
@@ -21,7 +21,6 @@ import { useParams } from "next/navigation";
 
 function NotesClient() {
   const params = useParams();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const slug = params.slug as string[];
   const tag = (slug[0] === "all" ? undefined : slug[0]) as NoteTag | undefined;
