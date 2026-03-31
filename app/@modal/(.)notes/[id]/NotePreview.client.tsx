@@ -1,8 +1,9 @@
 "use client";
 
 import Modal from "@/components/Modal/Modal";
-import NoteDetailsClient from "@/app/notes/[id]/NoteDetails.client";
+import NoteDetailsContent from "@/components/NoteDetails/NoteDetailsContent";
 import { useRouter, usePathname } from "next/navigation";
+import css from "./NotePreview.module.css";
 
 export default function NotePreviewClient() {
   const router = useRouter();
@@ -23,7 +24,9 @@ export default function NotePreviewClient() {
 
   return (
     <Modal onClose={handleClose}>
-      <NoteDetailsClient />
+      <div className={css.container}>
+        <NoteDetailsContent />
+      </div>
     </Modal>
   );
 }
